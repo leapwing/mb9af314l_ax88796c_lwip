@@ -1,0 +1,59 @@
+h1
+{
+text-align: center;
+font-family:arial,helvetica;
+}
+
+h2
+{
+margin:5px;
+}
+
+body
+{
+font-family:arial,helvetica;
+background-repeat: no-repeat;
+background-position: 85% 8%;
+background-image: url(img/fujitsu.png);
+background-color: #CCE8CF;
+}
+
+p
+{
+width:60%;
+padding-left:10%;
+}
+
+div.container
+{
+width:65%;
+border: 1px solid #000000;
+margin-left:10%;
+padding:2%;
+overflow:auto;
+background-color: #FFFFFF;
+}
+
+div.label
+{
+float:left;
+border-bottom:10px;
+}
+
+div.led_green_on {
+background-image: url(img/green_led_on.png);
+background-repeat: no-repeat;
+width:40px;
+height:40px;
+margin:5px;
+float:left;
+}
+
+div.led_green_off {
+background-image: url(img/green_led_off.png);
+background-repeat: no-repeat;
+width:40px;
+height:40px;
+margin:5px;
+float:left;
+} 
