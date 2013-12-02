@@ -42,11 +42,11 @@
 /* Minimal changes to opt.h required for tcp unit tests: */
 #define MEMP_MEM_MALLOC                 1
 #define MEM_ALIGNMENT                   4
-#define MEM_SIZE                        (8*1024)
+#define MEM_SIZE                        (12*1024)
 #define TCP_MSS							1536	
 #define TCP_SND_QUEUELEN                ((4 * (TCP_SND_BUF) + (TCP_MSS - 1))/(TCP_MSS))
 #define MEMP_NUM_TCP_SEG                TCP_SND_QUEUELEN
-#define TCP_SND_BUF                     (2 * TCP_MSS)
+#define TCP_SND_BUF                     (4 * TCP_MSS)
 #define TCP_WND                         (4 * TCP_MSS)
 
 /* Minimal changes to opt.h required for dhcp unit tests: */
@@ -55,6 +55,8 @@
 /* Minimal changes to opt.h required for statistics unit tests: */
 #define LWIP_STATS                      1
 #define LWIP_STATS_DISPLAY              0
+
+#define LWIP_DNS                        1
 
 /*
 The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UDP, TCP and ICMP checksums by hardware:

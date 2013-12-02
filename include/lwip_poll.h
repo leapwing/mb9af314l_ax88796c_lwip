@@ -16,13 +16,13 @@ extern volatile uint32_t g_u32SystemTime;
 //demo for dhcp
 #define DHCP_ENABLE 0 
 
-//#define TCPUDP_ECHO_DEMO                 //demo for TCP/UDP echo server
+#define TCPUDP_ECHO_DEMO                 //demo for TCP/UDP echo server
 //#define DNS_TCP_CLIENT_DEMO           //demo for TCP client and DNS client
 
 /*throughput testing enable*/
-//#define PERFORMANCE_TEST   //throughput test enable
+#define PERFORMANCE_TEST   //throughput test enable
 
-#define NETIO_SERVER
+//#define NETIO_SERVER
 
 #if defined PERFORMANCE_TEST
 #define IPERF_CLIENT    //Send throughput test using Iperf
@@ -31,11 +31,12 @@ extern volatile uint32_t g_u32SystemTime;
 #define NETIO_SERVER
 #endif
 
+#define WEBSERVER
 
 /*---------------------------------------------------------------------------*/
 /* function prototypes                                                       */
 /*---------------------------------------------------------------------------*/
-void lwip_Init(void);
+void LwIP_Init(void);
 void LwIP_Input_Handle(void);
 void LwIP_Tmr_Handle(void);
 #endif /* _LWIP_POLL_H */

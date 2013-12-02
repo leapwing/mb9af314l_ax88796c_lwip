@@ -14,6 +14,7 @@
 #include "ethernetif.h"
 #include "httpd.h"
 #include "ajax.h"
+#include "netio.h"
 #include "ax88796c_spi.h"
 
 #include "uart.h"
@@ -48,9 +49,19 @@ struct netif lwip_netif;
 /*---------------------------------------------------------------------------*/
 /* global functions                                                          */
 /*---------------------------------------------------------------------------*/
+#ifdef TCPUDP_ECHO_DEMO
 extern void echo_init(void);//for intialization of TCP echo server
 extern void udp_echo_init(void);//for intialization of UDP echo server
-
+#endif
+#ifdef	IPERF_SERVER
+extern void iperf_server_init(void);
+#endif
+#ifdef	IPERF_CLIENT
+extern void iperf_client_init(void);
+#endif
+#ifdef	TCP_RXTX
+extern void tcp_server_init(void);
+#endif
 /*!
  ******************************************************************************
  ** \brief  initialize the LwIP
@@ -59,7 +70,7 @@ extern void udp_echo_init(void);//for intialization of UDP echo server
  **
  ******************************************************************************
 */
-void lwip_Init(void)
+void LwIP_Init(void)
 {
 	struct ip_addr ipaddr;
 	struct ip_addr netmask;
@@ -107,8 +118,14 @@ void lwip_Init(void)
 	tcp_client_init();
 #endif
 
+#ifdef NETIO_SERVER
+	netio_init();
+#endif
+
+#ifdef WEBSERVER
 	httpd_init();
 //	Ajax_Init();
+#endif
 }
 
 /** Returns the current time in milliseconds,
@@ -191,7 +208,7 @@ void LwIP_Tmr_Handle()
 void LwIP_Input_Handle(void)
 {
 	volatile int32_t ax88796c_isr, pkt_cnt;
-	volatile int32_t loop_cnt = 3;
+	volatile int32_t loop_cnt = 20;
 	ax88796c_isr = ax88796c_check_int();
 	if(ax88796c_isr & ISR_LINK){
 		if(!ax88796c_check_media()){

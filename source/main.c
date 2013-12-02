@@ -67,7 +67,7 @@ int32_t main(void)
 	Uart4_Init();
 	_delay_init();
 	
-	lwip_Init();
+	LwIP_Init();
 	
 	// Setup scheduler and tasks
 	Scheduler_Init();

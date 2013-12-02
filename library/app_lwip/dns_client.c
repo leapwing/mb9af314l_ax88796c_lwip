@@ -41,7 +41,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "testframework/board.h"
+#include "board.h"
 #include "debug.h"
 /*---------------------------------------------------------------------------*/
 /* local defines                                                                                                                 */
@@ -61,8 +61,9 @@ uint8_t *errmsg="dns table is full or not support \n";
 /* global functions                                                          							  */
 /*---------------------------------------------------------------------------*/
 
- extern void dns_init();
- extern err_t dns_gethostbyname(const char *hostname, struct ip_addr *addr, dns_found_callback found,
+extern void dns_init(void);
+
+extern err_t dns_gethostbyname(const char *hostname, struct ip_addr *addr, dns_found_callback found, 
                   void *callback_arg);
 
   /*!
@@ -174,7 +175,7 @@ static void udp_server_init(void)
    {
      /* Bind the upcb to the UDP_PORT port */
      /* Using IP_ADDR_ANY allow the upcb to be used by any local interface */
-      err = udp_bind(upcb, IP_ADDR_ANY, UDPSERVER_PORT);
+      err = udp_bind(upcb, IP_ADDR_ANY, UDPSERVERPORT);
 
       if(err == ERR_OK)
       {

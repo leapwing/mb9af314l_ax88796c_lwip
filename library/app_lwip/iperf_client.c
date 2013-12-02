@@ -36,7 +36,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "testframework/board.h"
+#include "board.h"
 #include "debug.h"
 
 #if LWIP_TCP
@@ -47,7 +47,7 @@
 #define IPERF_SERVER_IP_ADDR0   192
 #define IPERF_SERVER_IP_ADDR1   168
 #define IPERF_SERVER_IP_ADDR2   1
-#define IPERF_SERVER_IP_ADDR3   30
+#define IPERF_SERVER_IP_ADDR3   74
 
 #define IPERF_SERVER_PORT       5001
 #define DATA_LENGTH 1460

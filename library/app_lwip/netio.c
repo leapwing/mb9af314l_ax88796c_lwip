@@ -2,7 +2,7 @@
 
 #include "lwip/opt.h"
 #include "lwip/tcp.h"
-#include "systick.h"
+#include "scheduler.h"
 
 /* See http://www.nwlab.net/art/netio/netio.html to get the netio tool */
 
@@ -116,7 +116,7 @@ static err_t netio_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t er
 							} else if (ns->cmd == NETIO_CMD_S2C) {
 								ns->state = NETIO_STATE_SEND_DATA;
 								/* start timer */
-								ns->time_stamp = SysTick_Get();
+								ns->time_stamp = Scheduler_GetSystemTime();
 								/* send first round of data */
 								len = tcp_sndbuf(pcb);
 								len = LWIP_MIN(len, ns->data_len - ns->cntr);
@@ -219,7 +219,7 @@ static err_t netio_sent(void *arg, struct tcp_pcb *pcb, u16_t len)
 		ns->cntr = 0;
 
 		/* check if timer expired */
-		if (SysTick_Get() - ns->time_stamp > 6000) {
+		if (Scheduler_GetSystemTime() - ns->time_stamp > 6000) {
 			ns->buf_ptr[0] = 1;
 			ns->state = NETIO_STATE_SEND_DATA_LAST;
 		} else {

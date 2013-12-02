@@ -33,7 +33,7 @@
 #include "lwip/tcp.h"
 #include <string.h>
 #include <stdio.h>
-#include "xprintf.h"
+
 
 /*---------------------------------------------------------------------------*/
 /* local defines                                                                                                                 */
@@ -75,12 +75,12 @@ void udp_echo_init(void)
       }
       else
       {
-        xputs("can not bind pcb");
+        printf("can not bind pcb");
       }
    }
    else
    {
-     xputs("can not create pcb");
+     printf("can not create pcb");
    } 
 }
 /*!
