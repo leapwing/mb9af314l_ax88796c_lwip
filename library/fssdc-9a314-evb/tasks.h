@@ -60,6 +60,7 @@ extern "C"
 {
 #endif
 
+#include "mcu.h"
 /**
  ******************************************************************************
  ** \defgroup TasksGroup Tasks
@@ -87,12 +88,13 @@ extern "C"
 /* Global variable definitions ('extern')                                     */
 /******************************************************************************/
 extern uint16_t u16ADCData;
-extern uint16_t u16KeyData;
+extern uint32_t u32KeyData;
 extern uint16_t u16LedVal;
 /******************************************************************************/
 /* Global function prototypes (definition in C source)                        */
 /******************************************************************************/
 
+void Task_RefreshDHCP(void);
 void Task_SetLEDs(void);
 void Task_ProcessSwitches(void);
 void Task_SerialTerminalOutput(void);

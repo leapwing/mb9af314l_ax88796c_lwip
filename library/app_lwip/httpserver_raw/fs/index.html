@@ -37,23 +37,29 @@ function requestData() {
 function processResponse() {
     if (xhr.readyState == 4  && xhr.status == 200){
 		myJO = JSON.parse(xhr.responseText); // my JSON Object
-		var ax = (myJO.a%4096) / 4095*100;
-		var qx = (myJO.q%100)/99*100;
-		var lx = myJO.l / 99*100;
-        document.getElementById('av').innerHTML = myJO.a;
+		var ax = (myJO.adc%4096) / 4095*100;
+		var kx = (myJO.key/1000);
+		var lx = myJO.led / 7*100;
+        document.getElementById('av').innerHTML = myJO.adc;
 		document.getElementById("adc").style.width = ax + '%';
-        document.getElementById('qv').innerHTML = myJO.q;
-		document.getElementById("qprc").style.width = qx + '%';
-		document.getElementById('ledval').value=myJO.l;
+        document.getElementById('kv').innerHTML = myJO.key;
+		document.getElementById("key").style.width = kx + '%';
+		document.getElementById('ledval').value=myJO.led;
 		document.getElementById("led").style.width = lx + '%';
+		if (myJO.led & 0x01)
+			document.getElementById("LEDgn0").className="led_green_on";
+		else
+			document.getElementById("LEDgn0").className="led_green_off";
+		if (myJO.led & 0x02)
+			document.getElementById("LEDgn1").className="led_green_on";
+		else
+			document.getElementById("LEDgn1").className="led_green_off";
+		if (myJO.led & 0x04)
+			document.getElementById("LEDgn2").className="led_green_on";
+		else
+			document.getElementById("LEDgn2").className="led_green_off";
 		}
     }
-
-var x = 100;
-function changeWidth() {
-    x += 10;
-    document.getElementById("adc").style.width = x + 'px';
-}
 
 function sendLEDData() {
     xhrs.open('get', 'input.cgi?ledval='+document.getElementById('ledval').value);
@@ -61,7 +67,7 @@ function sendLEDData() {
 }
 
 function incLED() {
-	if (document.getElementById('ledval').value < 99)
+	if (document.getElementById('ledval').value < 7)
     document.getElementById('ledval').value++;
 	sendLEDData();
 }
@@ -71,7 +77,8 @@ function decLED() {
 		document.getElementById('ledval').value--;
 	sendLEDData();
 }   
-window.setInterval(requestData, 1000);
+window.setInterval(requestData, 200);
+
 -->
 </script>
 <noscript>
@@ -84,7 +91,7 @@ You will get real-time data updates and a better data presentation.
 <h1>Welcome to FUJITSU FM3</h1>
 <p>
 
-This Webserver runs on an MB9BFD18T microcontroller, a member of Fujitsu's FM3 family,<br>powered by the <a href="http://savannah.nongnu.org/projects/lwip/">LwIP (lightweight IP)</a> TCP/IP stack.
+This Webserver runs on an MB9AF314L microcontroller, a member of Fujitsu's FM3 family,<br>powered by the <a href="http://savannah.nongnu.org/projects/lwip/">LwIP (lightweight IP)</a> TCP/IP stack.
 </p>
 <p>
 Here you see a website which refreshes its data from the microcontroller in background without the need to reload the whole page.
@@ -92,16 +99,21 @@ You can find a <a href="simple.shtml">simple website without the need for a Java
 </p>
 
 <div class="container">
-<h2>Controls on SK-FM3-176PMC-ETHERNET</h2>
-<p>Please turn the knobs on the starterkit. Also, press the pushbuttons to increase and decrease the value shown on the seven-segment displays.
+<h2>Controls on FSSD-9A314-EVB</h2>
+<p>Please turn the knobs on the starterkit. Also, press the joystick(right and left) to increase and decrease the value shown on the LED displays.
 </p>
-<div class="label">RP1: ADC (Analog Digital Converter):<span id="av">&nbsp;</span></div><div class="barbg"><div id="adc" class="bar">&nbsp;</div></div><br>
-<div class="label">SW4: QPRC (Quadrature Position/Revolution Counter):<span id="qv">&nbsp;</span></div><div class="barbg"><div id="qprc" class="bar">&nbsp;</div></div><br>
-<div class="label">Pushbuttons SW2 and SW3, associated with these two buttons:
+<div class="label">RV1: ADC (Analog Digital Converter):<span id="av">&nbsp;</span></div><div class="barbg"><div id="adc" class="bar">&nbsp;</div></div><br>
+<div class="label">Joystick <i>UP</i> and <i>DOWN</i>, associated with these two buttons:<span id="kv">&nbsp;</span></div><div class="barbg"><div id="key" class="bar">&nbsp;</div></div><br>
+<div class="label">Joystick <i>LEFT</i> and <i>RIGHT</i>, associated with these two buttons:
 <input type="button" value ="-" name="decbtn" onClick="javascript:decLED()">
-<input type="text" name="ledval" size="2" maxlength="2" id="ledval" value="78" onfocus="this.blur()" readonly="readonly" >
+<input type="text" name="ledval" size="1" maxlength="1" id="ledval" value="" onfocus="this.blur()" readonly="readonly" >
 <input type="button" value ="+" name="incbtn" onClick="javascript:incLED()">
 </div><div class="barbg"><div id="led" class="bar">&nbsp;</div></div><br>
+<div class="label">
+<div id="LEDgn2" class="led_green_off" ></div>
+<div id="LEDgn1" class="led_green_off" ></div>
+<div id="LEDgn0" class="led_green_off" ></div>
+</div><br>
 </div>
 
 
@@ -110,7 +122,7 @@ You can find a <a href="simple.shtml">simple website without the need for a Java
 For more information, updates, code examples and documentation, please visit our website at <a href="http://mcu.emea.fujitsu.com/">http://mcu.emea.fujitsu.com/</a> or contact <a href="mailto:mcu_ticket.FSEU@de.fujitsu.com">mcu_ticket.FSEU@de.fujitsu.com</a>.
 </p>
 <p>
-Below, you see a 100kb large picture of the SK-FM3-176PMC-ETHERNET evaluation board to demonstrate transfer speed.
+Below, you see a 100kb large picture of the FSSD-9A314-EVB evaluation board to demonstrate transfer speed.
 <img alt="big picture" src="bigpicture.jpg?1"><!--?1 to circumvent browser cache to enable performance measurements-->
 </p>
 </body>

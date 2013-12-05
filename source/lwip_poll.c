@@ -45,6 +45,7 @@
 /* global data                                                               */
 /*---------------------------------------------------------------------------*/
 struct netif lwip_netif;
+uint16_t eth_link;
 
 /*---------------------------------------------------------------------------*/
 /* global functions                                                          */
@@ -58,9 +59,14 @@ extern void iperf_server_init(void);
 #endif
 #ifdef	IPERF_CLIENT
 extern void iperf_client_init(void);
+extern void iperf_send(void);
 #endif
 #ifdef	TCP_RXTX
 extern void tcp_server_init(void);
+#endif
+#ifdef DNS_TCP_CLIENT_DEMO
+extern void dns_client_init(void);
+extern void tcp_client_init(void);
 #endif
 /*!
  ******************************************************************************
@@ -122,10 +128,9 @@ void LwIP_Init(void)
 	netio_init();
 #endif
 
-#ifdef WEBSERVER
 	httpd_init();
-//	Ajax_Init();
-#endif
+	Ajax_Init();
+	eth_link = 0;
 }
 
 /** Returns the current time in milliseconds,
@@ -213,11 +218,13 @@ void LwIP_Input_Handle(void)
 	if(ax88796c_isr & ISR_LINK){
 		if(!ax88796c_check_media()){
 			printf ("Link down.\n");
+			eth_link = 0;
 		}else{
 			uint16_t bmcr;
 			bmcr = ax88796c_mdio_read(PHY_ID, MII_BMCR);
 			printf("Link up, %sMbps, %s-duplex\n",(bmcr & BMCR_SPEED100) ? "100" : "10", \
 				(bmcr & BMCR_FULLDPLX) ? "full" : "half");
+			eth_link = 1;
 		}
 	}
 	if(ax88796c_isr & ISR_RXPCT){
@@ -231,6 +238,9 @@ void LwIP_Input_Handle(void)
 		}
 	}
 	ax88796c_clear_int(ax88796c_isr);
+#ifdef	IPERF_CLIENT
+	iperf_send();
+#endif
 }
 
 /*****************************************************************************/

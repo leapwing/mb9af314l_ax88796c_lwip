@@ -16,7 +16,7 @@ extern volatile uint32_t g_u32SystemTime;
 //demo for dhcp
 #define DHCP_ENABLE 0 
 
-#define TCPUDP_ECHO_DEMO                 //demo for TCP/UDP echo server
+//#define TCPUDP_ECHO_DEMO                 //demo for TCP/UDP echo server
 //#define DNS_TCP_CLIENT_DEMO           //demo for TCP client and DNS client
 
 /*throughput testing enable*/
@@ -31,7 +31,6 @@ extern volatile uint32_t g_u32SystemTime;
 #define NETIO_SERVER
 #endif
 
-#define WEBSERVER
 
 /*---------------------------------------------------------------------------*/
 /* function prototypes                                                       */

@@ -52,3 +52,21 @@ width:85%;
 float:left;
 background-color:#cccccc;
 }
+
+div.led_green_on {
+background-image: url(img/green_led_on.png);
+background-repeat: no-repeat;
+width:40px;
+height:40px;
+margin:5px;
+float:left;
+}
+
+div.led_green_off {
+background-image: url(img/green_led_off.png);
+background-repeat: no-repeat;
+width:40px;
+height:40px;
+margin:5px;
+float:left;
+} 

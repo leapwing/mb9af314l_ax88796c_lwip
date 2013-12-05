@@ -62,7 +62,8 @@
 #include "uart.h"
 #include "stacklessudp.h"
 
-
+#include "ip.h"
+#include "dhcp.h"
 
 /**
  ******************************************************************************
@@ -78,12 +79,12 @@
 /* Global variable definitions (declared in header file with 'extern')        */
 /******************************************************************************/
 uint16_t u16ADCData;
-uint16_t u16KeyData;
+uint32_t u32KeyData;
 uint16_t u16LedVal;
 
-// Global buffer, defined in main.c
-//uint8_t ethbfr[1500];
-
+// Global buffer, defined in lwip_poll.c
+extern struct netif lwip_netif;
+extern uint16_t eth_link;
 /******************************************************************************/
 /* Local type definitions ('typedef')                                         */
 /******************************************************************************/
@@ -100,6 +101,38 @@ uint16_t u16LedVal;
 /* Function implementation - global ('extern') and local ('static')           */
 /******************************************************************************/
 
+#if LWIP_DHCP
+/**
+ ******************************************************************************
+ ** \brief Request a new IP address from DHCP server if e.g. cable is reconnected
+ ******************************************************************************/
+void Task_RefreshDHCP(void)
+{
+	static volatile uint8_t DHCPStarted = 0;
+
+	if ((DHCPStarted == 1) && (eth_link == 0))
+	{ // Cable disconnected
+		struct ip_addr ipaddr;
+		struct ip_addr netmask;
+		struct ip_addr gw;
+		netif_set_down(&lwip_netif);
+
+		IP4_ADDR(&ipaddr, 0, 0, 0, 0);
+		IP4_ADDR(&netmask, 0, 0, 0, 0);
+		IP4_ADDR(&gw, 0, 0, 0, 0);
+		netif_set_addr(&lwip_netif, &ipaddr, &netmask, &gw);
+
+		DHCPStarted = 0;
+	}
+	else if ((DHCPStarted == 0) && (eth_link == 1))
+	{ // Cable reconnected, Auto-negotiation succeeded
+		dhcp_start(&lwip_netif);
+		DHCPStarted = 1;
+	}
+
+}
+#endif // (LWIP_DHCP)
+
 /**
  ******************************************************************************
  ** \brief Terminal Output via UART B
@@ -108,7 +141,7 @@ void Task_SerialTerminalOutput(void)
 {
   static uint32_t u32Heartbeat = 0;
   printf("\n\n=== %i =====================================================\n", u32Heartbeat++);
-  printf("u16ADCData: %d\nu16KeyData: %d\n", u16ADCData, u16KeyData);
+  printf("u16ADCData: %d\nu32KeyData: %d\n", u16ADCData, u32KeyData);
   printf("\n");
 }
 
@@ -156,12 +189,12 @@ void Task_ProcessSwitches(void)
   
   if ((BUTTON_UP_PRESSED()))
   {
-	u16KeyData = (u16KeyData < 99) ? u16KeyData + 1 : 99;
+	u32KeyData = (u32KeyData < 100000) ? u32KeyData + 1000 : 100000;
   }
   
   if ((BUTTON_DOWN_PRESSED()))
   {
-    u16KeyData = (u16KeyData > 0) ? u16KeyData - 1 : 0;		
+    u32KeyData = (u32KeyData > 1000) ? u32KeyData - 1000 : 0;		
   }
   
 }

@@ -21,12 +21,12 @@ reloading the hole page here</a>
 
 <div class="container">
 <div class="label">ADC:</div><!--#ADC--><br>
-<div class="label">QPRC:</div><!--#QPRC--><br>   
+<div class="label">KEY:</div><!--#KEY--><br>   
 <div class="label"><form name="input" method="GET" action="/inputsimple.cgi">
 <input type="submit" value="Set LEDs" />
-<input type="text" name="ledval" size="2" maxlength="2" id="ledval" value="<!--#LED-->" />
+<input type="number" name="ledval" size="1" min="0" max="7" maxlength="1" value="<!--#LED-->">
 </form>
-</div><!--#LED--><br>
+</div><br>
 </div>
 
 <p> 
@@ -35,7 +35,7 @@ reloading the hole page here</a>
 
 <p>
 For more information, updates, code examples and documentation, please visit our website at <a href="http://mcu.emea.fujitsu.com/">http://mcu.emea.fujitsu.com/</a>.
-Below, you see a 100kb large picture of the SK-FM3-176PMC-ETHERNET evaluation board to demonstrate transfer speed.
+Below, you see a 100kb large picture of the FSSD-9A314-EVB evaluation board to demonstrate transfer speed.
 <img alt="big picture" src="bigpicture.jpg?1"><!--?1 to circumvent browser cache to enable performance measurements-->
 </p> 
 

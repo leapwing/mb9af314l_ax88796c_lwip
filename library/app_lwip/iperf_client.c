@@ -136,9 +136,9 @@ static void iperf_client_send(struct tcp_pcb *tpcb, struct client * es)
     {
         /* get pointer on pbuf from es structure */
         ptr = es->p_tx;
-
+		
         /* enqueue data for transmission */
-        tcp_write(tpcb, ptr->payload, ptr->len, TCP_WRITE_FLAG_COPY);
+        tcp_write(tpcb, ptr->payload, ptr->len, TCP_WRITE_FLAG_COPY);		
     }
 }
 
@@ -191,13 +191,13 @@ void iperf_client_init(void)
         ipferf_es.state = ES_NONE;
         ipferf_es.pcb = ipderf_client_pcb;
         ipferf_es.p_tx = pbuf_alloc(PBUF_LINK, strlen((char const *)piperfdata), PBUF_RAM);//PBUF_ROM
-
+		
         if(ipferf_es.p_tx!=NULL)
         {
             ipferf_es.p_tx->len= DATA_LENGTH;
             ipferf_es.p_tx->tot_len=DATA_LENGTH;
             ipferf_es.p_tx->payload=piperfdata;//data;
-            ipferf_es.p_tx->next=ipferf_es.p_tx;;
+            ipferf_es.p_tx->next=ipferf_es.p_tx;
         }
         /* pass newly allocated es structure as argument to tpcb */
         tcp_arg(ipderf_client_pcb,(void *) &ipferf_es);

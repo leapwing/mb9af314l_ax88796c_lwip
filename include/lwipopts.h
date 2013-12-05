@@ -42,7 +42,7 @@
 /* Minimal changes to opt.h required for tcp unit tests: */
 #define MEMP_MEM_MALLOC                 1
 #define MEM_ALIGNMENT                   4
-#define MEM_SIZE                        (12*1024)
+#define MEM_SIZE                        (16*1024)
 #define TCP_MSS							1536	
 #define TCP_SND_QUEUELEN                ((4 * (TCP_SND_BUF) + (TCP_MSS - 1))/(TCP_MSS))
 #define MEMP_NUM_TCP_SEG                TCP_SND_QUEUELEN
@@ -51,12 +51,16 @@
 
 /* Minimal changes to opt.h required for dhcp unit tests: */
 #define LWIP_DHCP                       0
+//#define LWIP_NETIF_HOSTNAME             0
 
 /* Minimal changes to opt.h required for statistics unit tests: */
 #define LWIP_STATS                      1
 #define LWIP_STATS_DISPLAY              0
 
-#define LWIP_DNS                        1
+/* Minimal changes to opt.h required for dns unit tests: */
+#define LWIP_DNS                        0
+#define DNS_LOCAL_HOSTLIST				0
+#define DNS_LOCAL_HOSTLIST_IS_DYNAMIC   0
 
 /*
 The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UDP, TCP and ICMP checksums by hardware:
@@ -93,5 +97,37 @@ The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UD
   #define CHECKSUM_CHECK_TCP              1
 #endif
 
+//#define LWIP_DEBUG 					  	LWIP_DBG_ON
+//#define NETIF_DEBUG                     LWIP_DBG_ON
+//#define DNS_DEBUG                       LWIP_DBG_ON
+//#define UDP_DEBUG                       LWIP_DBG_ON
+//#define DHCP_DEBUG                      LWIP_DBG_ON
+//#define TCP_QLEN_DEBUG 					LWIP_DBG_ON
+//#define TCP_OUTPUT_DEBUG				LWIP_DBG_ON
+/**
+ * HTTPD_DEBUG: Enable debugging for HTTPD.
+ */
+#define HTTPD_DEBUG                     LWIP_DBG_OFF
+
+
+#define LWIP_NOASSERT 1
+/*
+   -----------------------------------------
+   ---------- HTTP server options ----------
+   -----------------------------------------
+*/
+#define TCP_MSL 1000UL
+#define LWIP_HTTPD_SSI 1
+#define LWIP_HTTPD_CGI 1
+
+#define HTTPD_SERVER_AGENT "LwIP/1.4.1 HTTP server running on a Fujitsu FM3"
+
+/*
+   -----------------------------------------
+   ---------- SMTP client options ----------
+   -----------------------------------------
+*/
+#define SMTP_DEBUG LWIP_DBG_OFF
+#define SMTP_DEBUG_TRACE 1
 
 #endif /* __LWIPOPTS_H__ */

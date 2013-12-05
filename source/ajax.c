@@ -50,7 +50,7 @@
 
 // defined in tasks.h
 extern uint16_t u16ADCData;
-extern uint32_t u32QPCRData;
+extern uint32_t u32KeyData;
 extern uint16_t u16LedVal;
 
 /******************************************************************************/
@@ -59,17 +59,17 @@ extern uint16_t u16LedVal;
 
 ///  Content of JSON file for AJAX operation. If you alter it, check output with http://jsonlint.com/ !
 #define JSONSTRING "{\
-\"a\":\"%d\",\
-\"k\":\"%d\",\
-\"l\":\"%d\"\
-}" , u16ADCData, u32QPCRData, u16LedVal
+\"adc\":\"%d\",\
+\"key\":\"%d\",\
+\"led\":\"%d\"\
+}" , u16ADCData, u32KeyData, u16LedVal
 
 
 const uint8_t * pu8SSITags[] =
 {
   (const uint8_t *)"AJAXdata",
   (const uint8_t *)"ADC",    // The last three SSI Tags are not used for AJAX but the simple site
-  (const uint8_t *)"QPRC",
+  (const uint8_t *)"KEY",
   (const uint8_t *)"LED"
 };
 
@@ -110,8 +110,8 @@ Ajax_GenerateData(int iIndex, char *pcInsert, int iInsertLen)
   case 1: // ADC
     return (snprintf(pcInsert, iInsertLen, "%d", u16ADCData));
     //break;
-  case 2: // QPRC
-    return (snprintf(pcInsert, iInsertLen, "%d", u32QPCRData));
+  case 2: // KEY
+    return (snprintf(pcInsert, iInsertLen, "%d", u32KeyData));
     //break;
   case 3: // LED
     return (snprintf(pcInsert, iInsertLen, "%d", u16LedVal));

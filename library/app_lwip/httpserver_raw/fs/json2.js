@@ -1,20 +1,20 @@
-/* json2.js 2011-10-19 Public Domain.
+/* json2.js 2013-5-26 Public Domain.
 https://github.com/douglascrockford/JSON-js/blob/master/json2.js
 
 Minified to save space on FM3. Please refer to the original source code
 for documentation and your own developments!
 
 NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
-*/ 
+*/
 
-var JSON;if(!JSON){JSON={};}
+if(typeof JSON!=='object'){JSON={};}
 (function(){'use strict';function f(n){return n<10?'0'+n:n;}
-if(typeof Date.prototype.toJSON!=='function'){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+'-'+
+if(typeof Date.prototype.toJSON!=='function'){Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+'-'+
 f(this.getUTCMonth()+1)+'-'+
 f(this.getUTCDate())+'T'+
 f(this.getUTCHours())+':'+
 f(this.getUTCMinutes())+':'+
-f(this.getUTCSeconds())+'Z':null;};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf();};}
+f(this.getUTCSeconds())+'Z':null;};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf();};}
 var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={'\b':'\\b','\t':'\\t','\n':'\\n','\f':'\\f','\r':'\\r','"':'\\"','\\':'\\\\'},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?'"'+string.replace(escapable,function(a){var c=meta[a];return typeof c==='string'?c:'\\u'+('0000'+a.charCodeAt(0).toString(16)).slice(-4);})+'"':'"'+string+'"';}
 function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&&typeof value==='object'&&typeof value.toJSON==='function'){value=value.toJSON(key);}
 if(typeof rep==='function'){value=rep.call(holder,key,value);}

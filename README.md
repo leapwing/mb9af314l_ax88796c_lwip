@@ -30,12 +30,12 @@ AX88796C RESET & SPI_SS (GPIO)
 	- [Other Info 其他訊息](/doc/zh_TW/OTHER.md)
   
 ### Screenshot ###
-
+![demo_1](https://lh3.googleusercontent.com/j3KPC8NBFIZVUQrONxNBAEr2xg8ekddBjagJA1iWT0g=w639-h658-no)
 ▲ Demo1 Screen    
-
+![demo_2](https://lh5.googleusercontent.com/-k_0SOv7cWm8/UqBGI4xMjHI/AAAAAAAAAM8/IcI6XvmnD-g/w782-h658-no/fm9baf314l_ax88796c_demo2.jpg)
 ▲ Demo2 Screen  
 
 [MB9AF314L]: http://www.spansion.com/Products/microcontrollers/32-bit-ARM-Core/fm3/Pages/overview_32fm3.aspx "FM3 Family"
 [ASIX]: http://www.asix.com.tw/index.php?&width=1152 "ASIX"
 [LwIP]: http://savannah.nongnu.org/projects/lwip "A Lightweight TCP/IP stack"
-[BLOG]: http://www.google.com ""
+[BLOG]: /

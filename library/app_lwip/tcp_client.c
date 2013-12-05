@@ -46,7 +46,7 @@
 #define DEST_IP_ADDR0   192
 #define DEST_IP_ADDR1   168
 #define DEST_IP_ADDR2   1
-#define DEST_IP_ADDR3   30
+#define DEST_IP_ADDR3   74
 
 #define DEST_PORT       8
 
@@ -54,7 +54,7 @@
 /* local data                                                                                                                    */
 /*---------------------------------------------------------------------------*/
 struct tcp_pcb *client_pcb;
-uint8_t *pdata="TCP client is OK! Fujitsu MB9BF618 EVB testing!\n";
+uint8_t *pdata="TCP client is OK! Fujitsu MB9AF314 EVB testing!\n";
 
 /* protocol states */
 enum client_states

@@ -42,6 +42,7 @@
 #include "udp.h"
 #include "snmp_msg.h"
 #include "tcp_impl.h"
+#include "dns.h"
 
 #include "board.h"
 #include "joystick.h"
@@ -84,7 +85,10 @@ int32_t main(void)
 	Scheduler_AddTask(dhcp_fine_tmr, 100, DHCP_FINE_TIMER_MSECS);
 	Scheduler_AddTask(dhcp_coarse_tmr, 100, DHCP_COARSE_TIMER_SECS*1000);
 #endif
-	
+#if LWIP_DNS
+	Scheduler_AddTask(dns_tmr, 500, DNS_TMR_INTERVAL);
+#endif
+
 	Scheduler_AddTask(Task_SetLEDs, 0, 100);
 	Scheduler_AddTask(Task_ProcessSwitches, 500, 100);
 	Scheduler_AddTask(Task_Adconverter, 500, 100);

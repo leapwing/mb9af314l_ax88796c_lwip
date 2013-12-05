@@ -1,4 +1,0 @@
-This folder is used to produce webpage data using makefsdata.exe tool.
-The fsdata.c should be copied into folder of 
-lwip1_4_0\app\httpserver_raw\, (replace the existing file when available).
-The the Web server will be customized and shown for FSSDC9B618EVB.
