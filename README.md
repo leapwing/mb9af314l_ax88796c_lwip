@@ -27,6 +27,7 @@ AX88796C RESET & SPI_SS (GPIO)
 - [Developer's blog][BLOG]
 - [More Documents(Chinese)](/doc/zh_TW/) 
 	- [About 關於](/doc/zh_TW/ABOUT.md)
+	- [Speed Measure 速度量測](/doc/zh_TW/MEASURE.md)
 	- [Other Info 其他訊息](/doc/zh_TW/OTHER.md)
   
 ### Screenshot ###

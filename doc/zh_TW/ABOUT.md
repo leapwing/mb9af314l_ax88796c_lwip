@@ -11,54 +11,17 @@
 5. potentiomenter x 1(AN01)	  
 6. GPIO for AX88796C RESET & SPI_SS
  
-### 1. HTTP 網頁瀏覽器   
-  
-使用實驗版來連線電腦網頁顯示狀態  
+HTTP 網頁瀏覽器：   
+這裡我們使用兩種網頁的效能測試方式。  
+第一種方式：  
+預設頁面 index.html 是將存在記憶體的固定內容傳向瀏覽器的靜態網頁，包含一些 JavaScript 程式碼， 並允許網頁包含動態內容，需定時要求運行在背景中的小數據文件和改變HTML代碼中個別值，這種技術叫做AJAX，也就是不需要重新載入整個頁面來改變數據。AJAX 允許建立複雜的 Web 應用項目，類似桌面應用程式。  
+第二種方式：  
+另一頁面 simple.shtml  是一個靜態網頁，不需要可動態建立的 JavaScript，即是要改變數據需要每次重新載入。  
 
-Screenshot  
+**Screenshot**  
 ![demo_1](https://lh3.googleusercontent.com/j3KPC8NBFIZVUQrONxNBAEr2xg8ekddBjagJA1iWT0g=w639-h658-no)  
 ▲ Demo1 Screen    
 
 ![demo_2](https://lh5.googleusercontent.com/-k_0SOv7cWm8/UqBGI4xMjHI/AAAAAAAAAM8/IcI6XvmnD-g/w782-h658-no/fm9baf314l_ax88796c_demo2.jpg)  
 ▲ Demo2 Screen  
-
-### 2. PING ###
-
-### 3. IPFER ###
-
-### 4. ###
-
-### 5. NETIO ###
-
-測試網路速度  
-工具：[**NETIO**][NETIO]  
-將firmware中NETIO_SERVER功能打開  
-執行netio程式測試速度
-測試結果： 
-
-![netio_1](https://lh3.googleusercontent.com/-54aWEkk8spk/UqBGPHQDTHI/AAAAAAAAANw/a2uX-aCCDQU/w669-h294-no/fm9baf314l_ax88796c_netio_s2_536.jpg) 
-▲ TCP\_MSS：536 ，TCP\_SND\_BUF： 2 * TCP\_MSS  
-
-![netio_2](https://lh4.googleusercontent.com/-DJuXn3cXaX4/UqBGPr7yZiI/AAAAAAAAAOA/8U3GW3FvZQ8/w669-h294-no/fm9baf314l_ax88796c_netio_s4_536.jpg)  
-▲ TCP\_MSS：536 ，TCP\_SND\_BUF： 4 * TCP\_MSS  
-
-![netio_3](https://lh4.googleusercontent.com/-o_RYqiJ7D1k/UqBGPFD6XHI/AAAAAAAAAN4/N5OF0sVqXJc/w669-h294-no/fm9baf314l_ax88796c_netio_s2_1536.jpg)  
-▲ TCP\_MSS：1536 ，TCP\_SND\_BUF： 2 * TCP\_MSS  
-
-![netio_4](https://lh5.googleusercontent.com/-uw8EMsHMcxg/UqBGPNfzzTI/AAAAAAAAAN8/oDD-RKbC_AU/w669-h294-no/fm9baf314l_ax88796c_netio_s4_1536.jpg)  
-▲ TCP\_MSS：1536 ，TCP\_SND\_BUF： 4 * TCP\_MSS  
-
-
-![netio_5](https://lh4.googleusercontent.com/-mfVDNkNYMaE/UqBGKJ-47ZI/AAAAAAAAANI/6htFF9jcivA/w669-h294-no/fm9baf314l_ax88796c_netio_s4_1536_software.jpg)  
-▲ TCP\_MSS：1536 ，TCP\_SND\_BUF： 4 * TCP\_MSS no COE 
-
-
-### 6. WGET ###
-
-### 7. CURL ###
-
-
-[NETIO]: http://www.ars.de/ars/ars.nsf/docs/netio "NETIO  network throughput benchmark"
-
-[ECHOPING]:http://echoping.sourceforge.net/ "echoping"
 
