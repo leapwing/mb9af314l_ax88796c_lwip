@@ -97,13 +97,13 @@ The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UD
   #define CHECKSUM_CHECK_TCP              1
 #endif
 
-//#define LWIP_DEBUG 					  	LWIP_DBG_ON
+//#define LWIP_DEBUG 					  LWIP_DBG_ON
 //#define NETIF_DEBUG                     LWIP_DBG_ON
 //#define DNS_DEBUG                       LWIP_DBG_ON
 //#define UDP_DEBUG                       LWIP_DBG_ON
 //#define DHCP_DEBUG                      LWIP_DBG_ON
-//#define TCP_QLEN_DEBUG 					LWIP_DBG_ON
-//#define TCP_OUTPUT_DEBUG				LWIP_DBG_ON
+//#define TCP_QLEN_DEBUG 				  LWIP_DBG_ON
+//#define TCP_OUTPUT_DEBUG				  LWIP_DBG_ON
 /**
  * HTTPD_DEBUG: Enable debugging for HTTPD.
  */
@@ -119,7 +119,7 @@ The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UD
 #define TCP_MSL 1000UL
 #define LWIP_HTTPD_SSI 1
 #define LWIP_HTTPD_CGI 1
-
+#define LWIP_HTTPD_SUPPORT_POST   1
 #define HTTPD_SERVER_AGENT "LwIP/1.4.1 HTTP server running on a Fujitsu FM3"
 
 /*

@@ -221,6 +221,8 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p);
  */
 void httpd_post_finished(void *connection, char *response_uri, u16_t response_uri_len);
 
+void http_set_post_handlers(const tCGI *pPost, int iNumHandlers);
+
 #ifndef LWIP_HTTPD_POST_MANUAL_WND
 #define LWIP_HTTPD_POST_MANUAL_WND  0
 #endif

@@ -2503,4 +2503,119 @@ http_set_cgi_handlers(const tCGI *cgis, int num_handlers)
 }
 #endif /* LWIP_HTTPD_CGI */
 
+#if LWIP_HTTPD_SUPPORT_POST
+
+#if LWIP_HTTPD_SUPPORT_POST
+/* CGI handler information */
+const tCGI *g_pPOSTs;
+int g_iNumPOSTs;
+#endif /* LWIP_HTTPD_CGI */
+
+/* Buffer for post file */
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN     512
+
+typedef struct{
+	int32_t post_handler_index;
+	char * response_url;
+	uint16_t http_post_payload_full_flag;
+	uint16_t http_post_payload_len;
+	char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
+}Post_state_t;
+
+static Post_state_t Post_State;
+/* POST handlers */
+void
+http_set_post_handlers(const tCGI *pPost, int num_handlers)
+{
+	LWIP_ASSERT("no post given", pPost != NULL);
+	LWIP_ASSERT("invalid number of handlers", num_handlers > 0);
+	g_pPOSTs = pPost;
+	g_iNumPOSTs = num_handlers;
+}
+
+
+err_t httpd_post_begin(void *connection, const char *uri, const char *http_request,
+                       u16_t http_request_len, int content_len, char *response_uri,
+                       u16_t response_uri_len, u8_t *post_auto_wnd)
+{
+	//struct http_state *hs = (struct http_state*)connection;
+	int i;
+	
+	if(!uri || (uri[0] == '\0')) {
+		return ERR_ARG;
+	}	
+	
+	Post_State.post_handler_index = -1;
+	Post_State.response_url = NULL;
+	
+    /* Does the base URI we have isolated correspond to a CGI handler? */
+    if (g_iNumPOSTs && g_pPOSTs) {
+      for (i = 0; i < g_iNumPOSTs; i++) {
+        if (strcmp(uri, g_pPOSTs[i].pcCGIName) == 0) {
+		   Post_State.post_handler_index = i;
+           break;
+        }
+      }
+    }
+	if(i == g_iNumPOSTs) {
+		return ERR_ARG;  
+	}
+	return ERR_OK;
+}
+
+err_t httpd_post_receive_data(void *connection, struct pbuf *p)
+{
+	struct http_state *hs = (struct http_state *)connection;
+	int count;
+	struct pbuf *pnow = p;
+	char *data, *post_payload;
+	int len;
+	
+	Post_State.http_post_payload_full_flag = 0;
+	Post_State.http_post_payload_len = 0;
+
+	while(pnow != NULL){
+		post_payload = Post_State.http_post_payload + Post_State.http_post_payload_len;
+		data = pnow->payload;
+		len = pnow->len;
+		if(Post_State.http_post_payload_len + len <= LWIP_HTTPD_POST_MAX_PAYLOAD_LEN){
+			memcpy(post_payload, data, len);
+			Post_State.http_post_payload_len += len;
+		}else{
+			Post_State.http_post_payload_full_flag = 1;
+			break;
+		}
+		pnow = pnow->next;
+	}
+	
+	pbuf_free(p);
+	
+	if(Post_State.http_post_payload_full_flag){
+		Post_State.http_post_payload_full_flag = 0;
+		Post_State.response_url = NULL;
+		return ERR_VAL;
+	}else if(hs->post_content_len_left == 0){
+		if(Post_State.post_handler_index != -1){
+			count = extract_uri_parameters(hs, Post_State.http_post_payload);
+			Post_State.response_url = (void *)g_pPOSTs[Post_State.post_handler_index].pfnCGIHandler(Post_State.post_handler_index, count, hs->params, hs->param_vals);
+			return ERR_OK;
+		}else{
+			Post_State.response_url = NULL;
+			return ERR_ARG;
+		}
+	}else{
+		return ERR_ARG;
+	}
+}
+
+void httpd_post_finished(void *connection, char *response_uri, u16_t response_uri_len)
+{
+	//struct http_state *hs = (struct http_state *)connection;
+	if(Post_State.response_url != NULL){
+		strcpy(response_uri, Post_State.response_url);
+	}
+}
+
+#endif
+
 #endif /* LWIP_TCP */

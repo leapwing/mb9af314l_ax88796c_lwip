@@ -49,4 +49,5 @@ Ajax_GenerateData(int iIndex, char *pcInsert, int iInsertLen);
 
 const char * Ajax_SetLEDsCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[]);
 const char * Ajax_SetLEDsCGIHandlerSimple(int iIndex, int iNumParams, char *pcParam[], char *pcValue[]);
+const char * SetLEDsPOSTHandlerSimplePost(int iIndex, int iNumParams, char *pcParam[], char *pcValue[]);
 #endif //__AJAX_H__

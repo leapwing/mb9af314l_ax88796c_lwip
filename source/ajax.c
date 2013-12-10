@@ -76,7 +76,13 @@ const uint8_t * pu8SSITags[] =
 tCGI CGIHandlers[] =
 {
   {"/input.cgi", &Ajax_SetLEDsCGIHandler},
-  {"/inputsimple.cgi", &Ajax_SetLEDsCGIHandlerSimple}
+  {"/inputsimple.cgi", &Ajax_SetLEDsCGIHandlerSimple},
+};
+
+tCGI POSTHandlers[] =
+{
+	{"/inputpost.cgi", &Ajax_SetLEDsCGIHandler},
+	{"/inputsimplepost.cgi", &SetLEDsPOSTHandlerSimplePost}
 };
 
 /**
@@ -85,8 +91,9 @@ tCGI CGIHandlers[] =
  **
  *****************************************************************************/
 void Ajax_Init(void){
-  http_set_ssi_handler( &Ajax_GenerateData, (const char **) pu8SSITags, 4);
-  http_set_cgi_handlers(CGIHandlers, 2);
+  http_set_ssi_handler( &Ajax_GenerateData, (const char **) pu8SSITags, sizeof(pu8SSITags)/sizeof (uint8_t *));
+  http_set_cgi_handlers(CGIHandlers, sizeof(CGIHandlers)/sizeof(tCGI));
+  http_set_post_handlers(POSTHandlers, sizeof(POSTHandlers)/sizeof(tCGI));
 }
 
 /*****************************************************************************/
@@ -169,3 +176,19 @@ const char * Ajax_SetLEDsCGIHandlerSimple(int iIndex, int iNumParams, char *pcPa
   }
   return (const char *) cgiretval;
 }
+
+const char * SetLEDsPOSTHandlerSimplePost(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
+{
+  int32_t i = 0;
+	static const uint8_t cgiretval[] = "/simple.shtml";
+  // Iterate through the parameters and set LED display value if a param name matches "ledval"
+  for(i=0; i < iNumParams; ++i)
+  {
+    if (0 == strcmp(pcParam[i], "ledval_post"))
+    {
+      u16LedVal = atoi(pcValue[i]);
+    }
+  }
+  return (const char *) cgiretval;
+}
+

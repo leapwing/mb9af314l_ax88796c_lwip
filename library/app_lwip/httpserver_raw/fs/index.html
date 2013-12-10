@@ -63,7 +63,9 @@ function processResponse() {
 
 function sendLEDData() {
     xhrs.open('get', 'input.cgi?ledval='+document.getElementById('ledval').value);
-    xhrs.send();  
+	xhrs.send();
+	//xhrs.open('post', 'inputpost.cgi', true);
+    //xhrs.send('ledval='+document.getElementById('ledval').value);  
 }
 
 function incLED() {
@@ -77,7 +79,7 @@ function decLED() {
 		document.getElementById('ledval').value--;
 	sendLEDData();
 }   
-window.setInterval(requestData, 200);
+window.setInterval(requestData, 500);
 
 -->
 </script>

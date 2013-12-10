@@ -26,7 +26,12 @@ reloading the hole page here</a>
 <input type="submit" value="Set LEDs" />
 <input type="number" name="ledval" size="1" min="0" max="7" maxlength="1" value="<!--#LED-->">
 </form>
-</div><br>
+</div>Get Method<br>
+<br><div class="label"><form name="input_post" method="POST" action="/inputsimplepost.cgi">
+<input type="submit" value="Set LEDs" />
+<input type="number" name="ledval_post" size="1" min="0" max="7" maxlength="1" value="<!--#LED-->">
+</form>
+</div>Post Method<br>
 </div>
 
 <p> 
