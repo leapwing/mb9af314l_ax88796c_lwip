@@ -116,7 +116,8 @@ The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UD
    ---------- HTTP server options ----------
    -----------------------------------------
 */
-#define TCP_MSL 1000UL
+
+#define TCP_WAIT_MSL 5000UL
 #define LWIP_HTTPD_SSI 1
 #define LWIP_HTTPD_CGI 1
 #define LWIP_HTTPD_SUPPORT_POST   1

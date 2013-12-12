@@ -1,6 +1,6 @@
 #include "system.h"
 #include "dualtimer_delay.h"
-#include "spim_support.h"
+#include "spim_dma_support.h"
 #include "ax88796c_spi.h"
 
 #include <stdio.h>
@@ -86,7 +86,15 @@ void axspi_read_rxq (void *data, int32_t len)
 	size = ax88796c_data.comp ? 2 : 5;
 	SPIDev_DataTx(&opbuf, &size);
 	size = len;
+#ifndef SPI_DMA_RXCH
 	SPIDev_DataRx(data, &size);
+#else
+	if(size < 64){
+		SPIDev_DataRx(data, &size);
+	}else{
+		SPIDev_DMA_DataRx(data, size);
+	}
+#endif
 	AX88796C_CSH();
 }
 
@@ -103,7 +111,15 @@ void axspi_write_txq (void *data, int len)
 	size = ax88796c_data.comp ? 1 : 4;
 	SPIDev_DataTx(&opbuf, &size);
 	size = len;
+#ifndef SPI_DMA_TXCH
 	SPIDev_DataTx(data, &size);
+#else
+	if(size < 64){
+		SPIDev_DataTx(data, &size);
+	}else{
+		SPIDev_DMA_DataTx(data, size);
+	}
+#endif
 	AX88796C_CSH();
 }
 
