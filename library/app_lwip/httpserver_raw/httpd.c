@@ -699,7 +699,7 @@ http_close_or_abort_conn(struct tcp_pcb *pcb, struct http_state *hs, u8_t abort_
 static err_t
 http_close_conn(struct tcp_pcb *pcb, struct http_state *hs)
 {
-   return http_close_or_abort_conn(pcb, hs, 0);
+	return http_close_or_abort_conn(pcb, hs, 0);
 }
 
 /** End of file: either close the connection (Connection: close) or

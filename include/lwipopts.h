@@ -40,21 +40,29 @@
 #define LWIP_POSIX_SOCKETS_IO_NAMES     0
 
 /* Minimal changes to opt.h required for tcp unit tests: */
-#define MEMP_MEM_MALLOC                 1
+#define MEMP_MEM_MALLOC                 0
 #define MEM_ALIGNMENT                   4
-#define MEM_SIZE                        (16*1024)
-#define TCP_MSS							1536	
-#define TCP_SND_QUEUELEN                ((4 * (TCP_SND_BUF) + (TCP_MSS - 1))/(TCP_MSS))
+#define MEM_SIZE                        (8*1024)
+#define TCP_MSS							1500	
+#define TCP_SND_QUEUELEN                (4 * TCP_SND_BUF / TCP_MSS)//((4 * (TCP_SND_BUF) + (TCP_MSS - 1))/(TCP_MSS))
+//#define MEMP_NUM_TCP_PCB                2
+//#define MEMP_NUM_TCP_PCB_LISTEN         2
 #define MEMP_NUM_TCP_SEG                TCP_SND_QUEUELEN
 #define TCP_SND_BUF                     (4 * TCP_MSS)
 #define TCP_WND                         (4 * TCP_MSS)
+//#define LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT 1
+#define LWIP_HAVE_SLIPIF                1
+#define MEMP_NUM_PBUF                   16
+#define PBUF_POOL_SIZE                  8
+//#define MEM_USE_POOLS                   0
+//#define MEMP_USE_CUSTOM_POOLS           0
 
 /* Minimal changes to opt.h required for dhcp unit tests: */
 #define LWIP_DHCP                       0
 //#define LWIP_NETIF_HOSTNAME             0
 
 /* Minimal changes to opt.h required for statistics unit tests: */
-#define LWIP_STATS                      1
+#define LWIP_STATS                      0
 #define LWIP_STATS_DISPLAY              0
 
 /* Minimal changes to opt.h required for dns unit tests: */
@@ -104,10 +112,11 @@ The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UD
 //#define DHCP_DEBUG                      LWIP_DBG_ON
 //#define TCP_QLEN_DEBUG 				  LWIP_DBG_ON
 //#define TCP_OUTPUT_DEBUG				  LWIP_DBG_ON
+
 /**
  * HTTPD_DEBUG: Enable debugging for HTTPD.
  */
-#define HTTPD_DEBUG                     LWIP_DBG_OFF
+//#define HTTPD_DEBUG                     LWIP_DBG_ON
 
 
 #define LWIP_NOASSERT 1
@@ -117,7 +126,8 @@ The Fujitsu FM3 devices with Ethernet support computing and verifying the IP, UD
    -----------------------------------------
 */
 
-#define TCP_WAIT_MSL 5000UL
+#define TCP_WAIT_MSL 60000UL
+//#define TCP_MSL 5000UL
 #define LWIP_HTTPD_SSI 1
 #define LWIP_HTTPD_CGI 1
 #define LWIP_HTTPD_SUPPORT_POST   1

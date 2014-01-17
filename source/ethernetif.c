@@ -186,7 +186,7 @@ low_level_output(struct netif *netif, struct pbuf *p)
 static struct pbuf *
 low_level_input(struct netif *netif)
 {
-	struct pbuf *p;
+	struct pbuf *p, *q;
 	u16_t len;
 
 	/* Obtain the size of the packet and put it into the "len"
@@ -209,7 +209,7 @@ low_level_input(struct netif *netif)
 
     /* We iterate over the pbuf chain until we have read the entire
      * packet into the pbuf. */
-    //for(q = p; q != NULL; q = q->next) {
+    for(q = p; q != NULL; q = q->next) {
 		/* Read enough bytes to fill this pbuf in the chain. The
 		 * available data in the pbuf is given by the q->len
 		 * variable.
@@ -218,9 +218,9 @@ low_level_input(struct netif *netif)
 		 * actually received size. In this case, ensure the tot_len member of the
 		 * pbuf is the sum of the chained pbuf len members.
 		 */
-		//ax88796c_PacketReceive(q->payload,q->len);
-    //}
-	ax88796c_PacketReceive(p->payload,p->len);
+		ax88796c_PacketReceive(q->payload,q->len);
+    }
+	//ax88796c_PacketReceive(p->payload,p->len);
     
 	if(ax88796c_EndPacketReceive() != 0){
 		pbuf_free(p);

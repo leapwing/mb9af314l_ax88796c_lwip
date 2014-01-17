@@ -333,11 +333,11 @@ int32_t ax88796c_init(uint8_t *macaddr)
 	uint16_t phy_tmp;
 	
 	AX88796C_RST_INIT();
-	AX88796C_RST_OUT(0);
-	_delay_ms(10);
-	AX88796C_RST_OUT(1);
 	AX88796C_CS_INIT();
 	AX88796C_INT_INIT();
+    AX88796C_RST_OUT(0);
+	_delay_ms(10);
+	AX88796C_RST_OUT(1);
 	// Set up SPI
    	SPIDev_Init();
 	
@@ -402,7 +402,7 @@ int32_t ax88796c_init(uint8_t *macaddr)
 	ax88796c_mdio_write(PHY_ID, MII_BMCR, phy_tmp | BMCR_ANRESTART);
 
 	axspi_write_reg(P0_ISR, 0xFFFF);
-	axspi_write_reg(P0_IMR, IMR_ENALL);
+	axspi_write_reg(P0_IMR, ~(IMR_RXPKT)/*IMR_ENALL*/);
 	return 0;
 }
 

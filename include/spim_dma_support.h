@@ -295,21 +295,21 @@
 #endif
    
 #if SPI_MFS == 0
-#define MFS_SPI_TX_DRQSEL()		  {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 13)) | (1 << 13);}      
+#define MFS_SPI_TX_DRQSEL()		  {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 13)) | (1 << 13);}      
 #elif SPI_MFS == 1
-#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 15)) | (1 << 15);} 
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 15)) | (1 << 15);} 
 #elif SPI_MFS == 2
-#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 17)) | (1 << 17);} 
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 17)) | (1 << 17);} 
 #elif SPI_MFS == 3
-#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 19)) | (1 << 19);} 
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 19)) | (1 << 19);} 
 #elif SPI_MFS == 4
-#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 21)) | (1 << 21);} 
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 21)) | (1 << 21);} 
 #elif SPI_MFS == 5
-#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 23)) | (1 << 23);} 
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 23)) | (1 << 23);} 
 #elif SPI_MFS == 6
-#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 25)) | (1 << 25);} 
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 25)) | (1 << 25);} 
 #elif SPI_MFS == 7
-#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 27)) | (1 << 27);} 
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 27)) | (1 << 27);} 
 #endif
    
 #endif
@@ -374,21 +374,21 @@
 #endif
 
 #if SPI_MFS == 0
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 12)) | (1 << 12);}      
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 12)) | (1 << 12);}      
 #elif SPI_MFS == 1
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 14)) | (1 << 14);} 
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 14)) | (1 << 14);} 
 #elif SPI_MFS == 2
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 16)) | (1 << 16);} 
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 16)) | (1 << 16);} 
 #elif SPI_MFS == 3
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 18)) | (1 << 18);} 
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 18)) | (1 << 18);} 
 #elif SPI_MFS == 4
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 20)) | (1 << 20);} 
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 20)) | (1 << 20);} 
 #elif SPI_MFS == 5
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 22)) | (1 << 22);} 
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 22)) | (1 << 22);} 
 #elif SPI_MFS == 6
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 24)) | (1 << 24);} 
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 24)) | (1 << 24);} 
 #elif SPI_MFS == 7
-#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL |= (FM3_INTREQ->DRQSEL & ~(1 << 26)) | (1 << 26);} 
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 26)) | (1 << 26);} 
 #endif
    
 #endif

@@ -43,6 +43,7 @@
 #include "snmp_msg.h"
 #include "tcp_impl.h"
 #include "dns.h"
+#include "stats.h"
 
 #include "board.h"
 #include "joystick.h"
@@ -93,6 +94,7 @@ int32_t main(void)
 	Scheduler_AddTask(Task_ProcessSwitches, 500, 100);
 	Scheduler_AddTask(Task_Adconverter, 500, 100);
 	Scheduler_AddTask(Task_SerialTerminalOutput, 500, 1000);
+//	Scheduler_AddTask(stats_display, 5300, 10000);
 
 	Scheduler_Start();
 	

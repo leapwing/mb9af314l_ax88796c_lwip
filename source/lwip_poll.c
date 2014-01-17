@@ -213,8 +213,8 @@ void LwIP_Tmr_Handle()
 void LwIP_Input_Handle(void)
 {
 	volatile int32_t ax88796c_isr, pkt_cnt;
-	volatile int32_t loop_cnt = 20;
 	ax88796c_isr = ax88796c_check_int();
+    
 	if(ax88796c_isr & ISR_LINK){
 		if(!ax88796c_check_media()){
 			printf ("Link down.\n");
@@ -227,19 +227,18 @@ void LwIP_Input_Handle(void)
 			eth_link = 1;
 		}
 	}
-	if(ax88796c_isr & ISR_RXPCT){
-		while(--loop_cnt){
-			pkt_cnt = ax88796c_CheckPacketReceive();
-			if(pkt_cnt == 0){
-				break;
-			}else if(pkt_cnt > 0){
-				ethernetif_input(&lwip_netif);	
-			}
-		}
-	}
+    if(ax88796c_isr & ISR_RXPCT){
+        pkt_cnt = ax88796c_CheckPacketReceive();
+        if(pkt_cnt > 0){
+            ethernetif_input(&lwip_netif);	
+        }
+
+	}   
 	ax88796c_clear_int(ax88796c_isr);
 #ifdef	IPERF_CLIENT
-	iperf_send();
+    if(eth_link){
+        iperf_send();
+    }
 #endif
 }
 

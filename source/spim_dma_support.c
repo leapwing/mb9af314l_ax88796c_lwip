@@ -140,6 +140,7 @@ typedef enum
 #define SPI_DMACB_SS_MASK (0x00070000)
 #define SPI_DMACB_EM (0x00000001)
 
+static uint32_t dummy = 0;
 /* Function prototypes -------------------------------------------------------*/
 
 /**************************************************************************/
@@ -164,7 +165,7 @@ void SPIDev_Init(void)
 	/* Initialize MFS as SPI */
 	MFS_SPI_SCR = 0x80;		/* Disable MFS */
 	MFS_SPI_SMR = 0x4F;		/* SPI mode 0, Enable SCK/SO output */
-	MFS_SPI_ESCR = 0;
+	MFS_SPI_ESCR = 0x08;		/* wait 1bit */
 	SPIDev_SetBaudrate(SPI_BAUDLATE);
 	MFS_SPI_SCR = 0x21;		/* Enable MFS: Set SPI/TXE */
 	
@@ -187,7 +188,7 @@ void SPIDev_Init(void)
 	MFS_SPI_RX_DRQSEL();
 	MFS_SPI_RX_DMACSA = (uint32_t)&(MFS_SPI_RDR);
 	MFS_SPI_RX_DMACDA = NULL;
-	MFS_SPI_RX_DMACB = SPI_DMACB_MS(DMAC_DEMAND_TRSF_MODE) | SPI_DMACB_TW(DMAC_TRST_WIDTH_8BIT) | SPI_DMACB_FS | SPI_DMACB_RS;
+	MFS_SPI_RX_DMACB = SPI_DMACB_MS(DMAC_DEMAND_TRSF_MODE) | SPI_DMACB_TW(DMAC_TRST_WIDTH_8BIT);
 	MFS_SPI_RX_DMACA = (SPI_DMACA_RXIS); 
 	NVIC_ClearPendingIRQ(MFS_SPI_RX_DMA_IRQn);
 	NVIC_EnableIRQ(MFS_SPI_RX_DMA_IRQn);
@@ -204,7 +205,7 @@ void SPIDev_Init(void)
 	MFS_SPI_TX_DMACSA = NULL;
 	MFS_SPI_TX_DMACDA = (uint32_t)&MFS_SPI_TDR;
     MFS_SPI_TX_DMACA = (SPI_DMACA_TXIS); 
-    MFS_SPI_TX_DMACB = SPI_DMACB_MS(DMAC_DEMAND_TRSF_MODE) | SPI_DMACB_TW(DMAC_TRST_WIDTH_8BIT) | SPI_DMACB_FD | SPI_DMACB_RD;
+    MFS_SPI_TX_DMACB = SPI_DMACB_MS(DMAC_DEMAND_TRSF_MODE) | SPI_DMACB_TW(DMAC_TRST_WIDTH_8BIT);
     NVIC_ClearPendingIRQ(MFS_SPI_TX_DMA_IRQn);
 	NVIC_EnableIRQ(MFS_SPI_TX_DMA_IRQn);
     NVIC_SetPriority(MFS_SPI_TX_DMA_IRQn,NVIC_EncodePriority(NVIC_PRIORITYGROUP2,2,3));
@@ -460,7 +461,7 @@ int32_t  SPIDev_DataRx(void *pData, uint32_t *pSize)
 #endif 
 		}else{
 			while (!(MFS_SPI_SSR & SSR_TDRE));
-			MFS_SPI_TDR = 0;
+			MFS_SPI_TDR = 0x00;
 			while (!(MFS_SPI_SSR & SSR_RDRF));
 			pSPI_Dev->pDataRx->pData[pSPI_Dev->pDataRx->Count] = (uint8_t)MFS_SPI_RDR;
 			pSPI_Dev->pDataRx->Count += 1;
@@ -530,30 +531,42 @@ int32_t  SPIDev_DMA_DataRx(void *pData, uint32_t Size)
 	pSPI_Dev->pDataRx->Count    = 0;
 	pSPI_Dev->pDataRx->IntState = 0;
 	pSPI_Dev->pDataRx->pData    = pData;
+	
+	pSPI_Dev->pDataTx->Size     = (uint32_t)(Size);
+	pSPI_Dev->pDataTx->Count    = 0;
+	pSPI_Dev->pDataTx->IntState = 0;
+	pSPI_Dev->pDataTx->pData    = (uint8_t *)&dummy;
         
 	tmp = (uint8_t)MFS_SPI_RDR;
 	tmp = MFS_SPI_SSR | SSR_REC;
 	MFS_SPI_SSR = tmp;
+
+#ifdef HW_FIFO	
+	MFS_SPI_FCR0 &= ~0x0F;
+#endif
+	MFS_SPI_SMR &= ~SMR_SOE;
+	MFS_SPI_SCR |= SCR_RXE;
 		
 	MFS_SPI_RX_DMACSA = (uint32_t)&(MFS_SPI_RDR);
 	MFS_SPI_RX_DMACDA = (uint32_t)(pSPI_Dev->pDataRx->pData);
 	MFS_SPI_RX_DMACB = SPI_DMACB_MS(DMAC_DEMAND_TRSF_MODE) | SPI_DMACB_TW(DMAC_TRST_WIDTH_8BIT) | SPI_DMACB_FS | SPI_DMACB_RS | SPI_DMACB_EI | SPI_DMACB_CI;
 	MFS_SPI_RX_DMACA = (SPI_DMACA_EB | SPI_DMACA_RXIS | SPI_DMACA_BC(0) | SPI_DMACA_TC(pSPI_Dev->pDataRx->Size - 1)); 
 	
-	MFS_SPI_TX_DMACSA = (uint32_t)NULL;
+	MFS_SPI_TX_DMACSA = (uint32_t)(pSPI_Dev->pDataTx->pData);
 	MFS_SPI_TX_DMACDA = (uint32_t)&MFS_SPI_TDR;
 	MFS_SPI_TX_DMACB = SPI_DMACB_MS(DMAC_DEMAND_TRSF_MODE) | SPI_DMACB_TW(DMAC_TRST_WIDTH_8BIT) | SPI_DMACB_FS |  SPI_DMACB_RS | SPI_DMACB_FD |  SPI_DMACB_RD;
-	MFS_SPI_TX_DMACA = (SPI_DMACA_EB | SPI_DMACA_TXIS | SPI_DMACA_BC(0) | SPI_DMACA_TC(pSPI_Dev->pDataRx->Size - 1)); 
+	MFS_SPI_TX_DMACA = (SPI_DMACA_EB | SPI_DMACA_TXIS | SPI_DMACA_BC(0) | SPI_DMACA_TC(pSPI_Dev->pDataTx->Size - 1)); 
 	
-	MFS_SPI_SMR &= ~SMR_SOE;
-	
-	MFS_SPI_SCR |= SCR_RXE | SCR_RIE | SCR_TIE;
+	MFS_SPI_SCR |= SCR_RIE | SCR_TIE;
 	
 	while(pSPI_Dev->pDataRx->IntState == 0);
 	
 	MFS_SPI_SCR &= ~(SCR_RXE | SCR_RIE | SCR_TIE);
 	
 	MFS_SPI_SMR |= SMR_SOE;
+#ifdef HW_FIFO
+	MFS_SPI_FCR0 |= 0x0F;
+#endif	
         
 	/* check int state */
 	if(pSPI_Dev->pDataRx->IntState == 1){
@@ -623,9 +636,9 @@ int32_t  SPIDev_DMA_DataTx(void *pData, uint32_t Size)
 	//while(!(MFS_SPI_TX_DMACB & SPI_DMACB_SS_MASK));
 	while(pSPI_Dev->pDataTx->IntState == 0);
 	
-	MFS_SPI_SCR &= ~(SCR_TBIE | SCR_TIE);
+	MFS_SPI_SCR &= ~(SCR_TIE);
 	
-	/* check Count */
+	/* check int state */
 	if(pSPI_Dev->pDataTx->IntState == 1){
 		ret = 0;	
 	}else{

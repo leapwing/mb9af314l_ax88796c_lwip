@@ -32,6 +32,7 @@
 #ifndef __ARCH_SYS_ARCH_H__
 #define __ARCH_SYS_ARCH_H__
 
+#include "mcu.h"
 typedef unsigned char	sys_prot_t;
 
 #endif /* __ARCH_SYS_ARCH_H__ */
